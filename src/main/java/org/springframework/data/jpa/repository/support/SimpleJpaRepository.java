@@ -156,9 +156,12 @@ public class SimpleJpaRepository<T, ID> implements JpaRepositoryImplementation<T
 	 */
 	@Transactional
 	public void delete(T entity) {
-
 		Assert.notNull(entity, "The entity must not be null!");
-		em.remove(em.contains(entity) ? entity : em.merge(entity));
+		/* when deleting, must nerver insert onde data base, */
+		/* because it probably will return a exception */
+		if (em.contains(entity))
+			em.remove(entity);	
+		//em.remove(em.contains(entity) ? entity : em.merge(entity));
 	}
 
 	/*
